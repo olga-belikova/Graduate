@@ -7,6 +7,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
+import ru.netology.dataclass.SQLHelper;
 import ru.netology.page.OrderPage;
 
 import java.sql.DriverManager;
@@ -36,9 +37,11 @@ public class GraduateTest {
 
     @Test
     @DisplayName("Успешный платеж")
-    void shouldSuccessfulPayment() {
+    void shouldSuccessfulPayment() throws SQLException {
         var cardInfo = DataHelper.getValidCard();
         orderPage.successfulPayment(cardInfo);
+        String dbQuery = SQLHelper.getPaymentIdApp();
+        Assertions.assertNotNull(dbQuery);
     }
 
     @Test

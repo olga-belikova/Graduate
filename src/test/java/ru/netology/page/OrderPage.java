@@ -44,28 +44,28 @@ public class OrderPage {
         buttonClick(0);
         setValidCard(info);
         buttonClick(2);
-        successNotification.shouldBe(visible, Duration.ofSeconds(15));
+        successNotification.shouldBe(visible, Duration.ofSeconds(10));
     }
 
     public void successfulCredit(DataHelper.ValidCard info) {
         buttonClick(1);
         setValidCard(info);
         buttonClick(2);
-        successNotification.shouldBe(visible, Duration.ofSeconds(15));
+        successNotification.shouldBe(visible, Duration.ofSeconds(10));
     }
 
     public void failPayment(DataHelper.InvalidCard info) {
         buttonClick(0);
         setInvalidCard(info);
         buttonClick(2);
-        errorNotification.shouldBe(visible, Duration.ofSeconds(15));
+        errorNotification.shouldBe(visible, Duration.ofSeconds(10));
     }
 
     public void failCredit(DataHelper.InvalidCard info) {
         buttonClick(1);
         setInvalidCard(info);
         buttonClick(2);
-        errorNotification.shouldBe(visible, Duration.ofSeconds(15));
+        errorNotification.shouldBe(visible, Duration.ofSeconds(10));
     }
 
     public void emptyFieldsPayment() {
