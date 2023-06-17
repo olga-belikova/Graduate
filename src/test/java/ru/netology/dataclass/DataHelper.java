@@ -1,4 +1,4 @@
-package ru.netology.data;
+package ru.netology.dataclass;
 
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
@@ -10,10 +10,11 @@ import java.util.Locale;
 import java.util.Random;
 
 public class DataHelper {
+
     private DataHelper() {
     }
 
-    private static Faker faker = new Faker(new Locale("en"));
+    public static Faker faker = new Faker(new Locale("en"));
 
     @Value
     public static class ValidCard {
@@ -60,6 +61,27 @@ public class DataHelper {
 
     private static String getRandomCode() {
         return faker.numerify("###");
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class PaymentEntity {
+        String status;
+        String transaction_id;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public class CreditRequestEntity {
+        String bank_id;
+        String status;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public class OrderEntity {
+        String credit_id;
+        String payment_id;
     }
 
 }

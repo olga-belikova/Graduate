@@ -2,7 +2,7 @@ package ru.netology.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.data.DataHelper;
+import ru.netology.dataclass.DataHelper;
 
 import java.time.Duration;
 
@@ -88,7 +88,29 @@ public class OrderPage {
         invalidFormatNotification.get(4).shouldBe(visible);
     }
 
-    public void invalidMonthBelow(DataHelper.ValidCard info) {
+    public void invalidNumberPayment(DataHelper.ValidCard info) {
+        buttonClick(0);
+        cardNumberField.setValue("1111 1111 1111 1111");
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        errorNotification.shouldBe(visible, Duration.ofSeconds(10));
+    }
+
+    public void invalidNumberCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue("1111 1111 1111 1111");
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        errorNotification.shouldBe(visible, Duration.ofSeconds(10));
+    }
+
+    public void invalidMonthBelowPayment(DataHelper.ValidCard info) {
         buttonClick(0);
         cardNumberField.setValue(info.getNumber());
         monthField.setValue("00");
@@ -99,13 +121,123 @@ public class OrderPage {
         invalidFormatNotification.get(0).shouldBe(visible);
     }
 
-    public void invalidMonthAbove(DataHelper.ValidCard info) {
+    public void invalidMonthAbovePayment(DataHelper.ValidCard info) {
         buttonClick(0);
         cardNumberField.setValue(info.getNumber());
         monthField.setValue("13");
         yearField.setValue(info.getYear());
         nameField.get(3).setValue(info.getName());
         cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidMonthBelowCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue("00");
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidMonthAboveCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue("13");
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidYearBelowPayment(DataHelper.ValidCard info) {
+        buttonClick(0);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue("00");
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidYearAbovePayment(DataHelper.ValidCard info) {
+        buttonClick(0);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue("29");
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidYearBelowCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue("00");
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidYearAboveCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue("29");
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidNamePayment(DataHelper.ValidCard info) {
+        buttonClick(0);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue("Иван Иванов");
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidNameCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue("Иван Иванов");
+        cvcField.setValue(info.getCode());
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidCodePayment(DataHelper.ValidCard info) {
+        buttonClick(0);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue("000");
+        buttonClick(2);
+        invalidFormatNotification.get(0).shouldBe(visible);
+    }
+
+    public void invalidCodeCredit(DataHelper.ValidCard info) {
+        buttonClick(1);
+        cardNumberField.setValue(info.getNumber());
+        monthField.setValue(info.getMonth());
+        yearField.setValue(info.getYear());
+        nameField.get(3).setValue(info.getName());
+        cvcField.setValue("000");
         buttonClick(2);
         invalidFormatNotification.get(0).shouldBe(visible);
     }

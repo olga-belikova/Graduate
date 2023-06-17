@@ -2,6 +2,7 @@ package ru.netology.dataclass;
 
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
@@ -10,47 +11,99 @@ import java.sql.SQLException;
 
 public class SQLHelper {
 
-    private static QueryRunner runner = new QueryRunner();
+    public static QueryRunner runner = new QueryRunner();
+    private static final String url = System.getProperty("db.url");
+    private static final String user = System.getProperty("db.user");
+    private static final String password = System.getProperty("db.password");
+    private static Connection conn;
 
-    private SQLHelper() {
+    public static Connection getConnection() {
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return conn;
     }
 
-    private static Connection getConn() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
-    }
+    public static String getStatusPayment() {
+        String querySQL = "SELECT status FROM payment_entity";
 
-    public static String getTransactionIdApp() {
-        var paymentSQL = "SELECT transaction_id FROM payment_entity WHERE status = 'APPROVED'";
-
-        try (var conn = getConn()) {
-            var transactionId = runner.query(conn, paymentSQL, new ScalarHandler<String>());
+        try (var conn = getConnection()) {
+            var statusPayment = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return statusPayment;
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return null;
     }
 
-    public static String getPaymentIdApp() {
-        var id = getTransactionIdApp();
-        var orderSQL = "SELECT payment_id FROM order_entity WHERE payment_id = ?";
+    public static String getStatusCredit() {
+        String querySQL = "SELECT status FROM credit_request_entity";
 
-        try (
-                var conn = getConn();
-                var orderStmt = conn.prepareStatement(orderSQL);) {
-            orderStmt.setString(1, id);
-            var resultSet = orderStmt.executeQuery();
-            var paymentId = resultSet.getString("payment_id");
+        try (var conn = getConnection()) {
+            var statusCredit = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return statusCredit;
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return null;
     }
+
+    public static String getTransactionId() {
+        String querySQL = "SELECT transaction_id FROM payment_entity";
+
+        try (var conn = getConnection()) {
+            var transactionId = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return transactionId;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getBankId() {
+        String querySQL = "SELECT bank_id FROM credit_request_entity";
+
+        try (var conn = getConnection()) {
+            var bankId = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return bankId;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getPaymentId() {
+        String querySQL = "SELECT payment_id FROM order_entity";
+
+        try (var conn = getConnection()) {
+            String paymentId = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return paymentId;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getCreditId() {
+        String querySQL = "SELECT credit_id FROM order_entity";
+
+        try (var conn = getConnection()) {
+            String creditId = runner.query(conn, querySQL, new ScalarHandler<String>());
+            return creditId;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
 
     @SneakyThrows
     public static void cleanDatabase() {
-        var connection = getConn();
-        runner.execute(connection, "DELETE FROM payment_entity");
-        runner.execute(connection, "DELETE FROM credit_request_entity");
-        runner.execute(connection, "DELETE FROM order_entity");
+        var conn = getConnection();
+        runner.execute(conn, "DELETE FROM app.payment_entity");
+        runner.execute(conn, "DELETE FROM app.credit_request_entity");
+        runner.execute(conn, "DELETE FROM app.order_entity");
     }
 }
