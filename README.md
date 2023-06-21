@@ -3,7 +3,7 @@
 
 Для запуска тестов необходимо выполнить следующие шаги:
 1. Запустить приложение Docker Desktop на локальном компьютере.
-2. Склонировать репозиторий https://github.com/olga-belikova/Grad на локальный компьютер. 
+2. Склонировать репозиторий https://github.com/olga-belikova/Graduate на локальный компьютер. 
 3. Открыть проект в IntelliJ IDEA.
 4. Запустить контейнеры, введя в терминале команду: `docker-compose up --build`.
 5. Запустить SUT, введя в новой вкладке терминала команду: `java -jar artifacts/aqa-shop.jar -Dspring.datasource.url=jdbc:mysql://localhost:3306/app`
